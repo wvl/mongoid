@@ -690,6 +690,22 @@ describe Mongoid::Attributes do
 
   end
 
+  describe "when accessor methods are defined by included module" do
+    let(:user) { User.new }
+
+    it "should define accessor methods if not in module" do
+      user.password?.should be_false
+      user.password = "Hello"
+      user.password?.should be_true
+    end
+
+    it "should call modules accessor methods" do
+      user.password.should be_nil
+      user.password = "mypass"
+      user.password.should == "Is Encrypted: mypass"
+    end
+  end
+
   [:attributes=, :write_attributes].each do |method|
     describe "##{method}" do
 
